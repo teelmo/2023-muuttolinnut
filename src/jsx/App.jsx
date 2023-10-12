@@ -51,8 +51,20 @@ function App() {
       <div className="container">
         <ul className="bird_selection">
           <li className="title">Valitse lintu</li>
-          <li><button type="button" onClick={(event) => changeBird(event, '1')}><img src="https://dummyimage.com/100x1:1/f1f1f1/000&text=&nbsp;" alt="Kuvausteksti" className="selected" /></button></li>
-          <li><button type="button" onClick={(event) => changeBird(event, '2')}><img src="https://dummyimage.com/100x1:1/f1f1f1/000&text=&nbsp;" alt="Kuvausteksti" /></button></li>
+          <li>
+            <button type="button" onClick={(event) => changeBird(event, '1')}>
+              <img src="https://dummyimage.com/100x1:1/f1f1f1/000&text=&nbsp;" alt="Kuvausteksti" className="selected" />
+              <div className="bird_name">Lintu 1</div>
+            </button>
+
+          </li>
+          <li>
+            <button type="button" onClick={(event) => changeBird(event, '2')}>
+              <img src="https://dummyimage.com/100x1:1/f1f1f1/000&text=&nbsp;" alt="Kuvausteksti" />
+              <div className="bird_name">Lintu 2</div>
+            </button>
+
+          </li>
         </ul>
         <ul className="tabs_container">
           <li className="tab tab1 tab_selected"><button type="button" onClick={(event) => changeTab(event, 'tab1')}>Live</button></li>

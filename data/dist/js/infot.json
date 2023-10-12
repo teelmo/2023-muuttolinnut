@@ -1,0 +1,46 @@
+{
+    "info": [
+        {
+            "teksti": "<p>Satelliitti-Salli lähtee liikkeelle 19.3. Ruandasta. Matkaa Paltamoon on suorinta linnuntietä noin <nobr>7 000 km.<nobr></p>",
+            "lat": -1.6
+        },
+        {
+            "teksti": "<p><i>Nämä infotekstit näytetään määrittelemällä jokaiselle tekstille leveyspiiri, jonka ylitettyään teksti tulee näkyviin.</i></p>",
+            "lat": 4
+        },
+        {
+            "teksti": "<p><i>Tähän voi myös laittaa ohjeita/selityksiä. Esimerkiksi kertoa ettei lintu oikeasti lennä yhtä soittoa Suomeen tms.</i></p>",
+            "lat": 6
+        },
+        {
+            "teksti": "<p><i>Tekstin voi ottaa pois näkyvistä määrittelemällä leveysasteen ja tyhjän tekstikentän.</i></p>",
+            "lat": 9
+        },
+        {
+            "teksti": "",
+            "lat": 11
+        },
+        {
+            "teksti": "<p>Salli valmistautuu Punaisen meren ylitykseen. Meren yllä se lentää noin 250 km.",
+            "lat": 19
+        },
+        {
+            "teksti": "",
+            "lat": 28
+        },
+        {
+            "teksti": "<p>&#x1F447; Alhaalla näkyy 70-luvulla rakennettu Assad-tekojärvi. Aleppon kaupunki saa juomavetensä siitä.</p>",
+            "lat": 35.8 
+        },
+        {
+            "teksti": "<p>Nyt Salli on noin puolessa välissä muuttomatkaansa.</p>",
+            "lat": 38 
+        },
+        {
+            "teksti": "",
+            "lat": 42
+        }
+        
+    ],
+    "lopputeksti": "Tähän joku summaus matkasta. Kuva? Kauan meni, monta kilometriä jne Lorem ipsum."
+}

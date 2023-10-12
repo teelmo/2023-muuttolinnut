@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>Linnunlaulutesti</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='js/a_mapbox-gl_v2.11.0.js'></script>
+    <script src='js/jquery.min.js'></script>
+    <script src='js/birdtrackermap.js'></script>
+    <script src="js/turf.min.js"></script>
+    <link href='css/mapbox-gl.css' rel='stylesheet' />
+    <link href='css/birdmap.css' rel='stylesheet' />
+</head>
+
+<body>
+    <div id="parentWrapper">
+        <div>
+            <div class="buttonWrapper">
+            <div class="button" data-value="0">Aloita alusta</div>
+        </div>
+        </div>
+        <div id="mapWrapper">
+            <div id="endingText">
+                <div id="endingTextContainer">
+                </div>
+            </div>
+            <div class='mapcontainer'>
+                <div id="infotext"></div>
+                <div id='birdmap'></div>
+                <div id='smallmap'>
+                    <div id="odometer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="temp"></div>
+</body>
+
+</html>

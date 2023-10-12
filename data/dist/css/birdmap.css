@@ -1,0 +1,154 @@
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: whitesmoke;
+    color: #000000;
+    font-size: 16px;
+    line-height: 1.2;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 500;
+  }
+  #parentWrapper {
+    font-weight: 300;
+    line-height: 1.2;
+    font-size: 1.4em;
+    /* height: calc(100vh - 50px); */
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    box-sizing: initial;
+}
+
+#mapWrapper .mapcontainer {
+    position: relative;
+    height: 100%;
+}
+
+#mapWrapper {
+    font-weight: 300;
+    line-height: 1.2;
+    font-size: 1.4em;
+    height: calc(100vh - 80px);
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    box-sizing: initial;
+    border-radius: 6px;
+    padding: 1vh;
+}
+#birdmap {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#smallmap {
+    width: 30%;
+    max-width: 300px;
+    height: 30%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1vh;
+    border-radius: 6px;
+    border: white 2px solid;
+}
+#infotext {
+    position: absolute;
+    z-index: 1000;
+    background: rgba(255,255,255,0.5);
+    border-radius: 6px;
+    margin: 1vh;
+    max-width: 50%;
+   
+}
+#infotext p {
+    padding: 10px;
+    font-size: 0.6em;
+    font-size: 1em;
+}
+#odometer {
+    position: absolute;
+    z-index: 1001;
+    margin: 0.8vh;
+    top: 0vh;
+    left: 0;
+    background-color: white;
+    color: black;
+    border-radius: 6px;
+    padding: 0.5em;
+    font-weight: bold;
+}
+#slider {
+    position: relative;
+    margin: 10px 20px;
+}
+
+#parentWrapper #endingText {
+position: relative;
+}
+
+#parentWrapper #endingText #endingTextContainer {
+    z-index: 103;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.85);
+    color: black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+}
+
+#parentWrapper .buttonWrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+#parentWrapper .button {
+    background: yellowgreen;
+    color: black;
+    border-radius: 999px;
+    margin: 10px;
+    text-align: center;
+    width: fit-content;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 0.6em;
+    cursor: pointer;
+}
+
+
+/* MAPBOX CUSTOM STYLES */
+
+.mapboxgl-ctrl-logo {
+    pointer-events: none;
+}
+
+.mapboxgl-ctrl-attrib-button {
+    display: none;
+}
+.mapboxgl-ctrl-group button.mapboxgl-ctrl-compass {
+    display: none;
+}
+
+.mapboxgl-popup-content {
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 1.2em;
+}
+
+#parenWrapper .selectize-dropdown .selected, #parenWrapper .selectize-dropdown .active, #parentWraper .selectize-dropdown .active:not(.selected), #parentWrapper .selectize-dropdown .selected{
+    background-color: #428bca;
+}

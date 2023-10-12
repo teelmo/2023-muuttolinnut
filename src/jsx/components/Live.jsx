@@ -36,7 +36,8 @@ function Live({ activeBird }) {
     <div className="app">
       <div className="container">
         <h2>
-          Aktiivinen lintu
+          Lintu lintunen
+          {' '}
           {activeBird}
         </h2>
         <div className="map_container">
