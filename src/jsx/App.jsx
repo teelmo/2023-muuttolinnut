@@ -1,39 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, /* useEffect,  useCallback, useMemo */
+} from 'react';
 import '../styles/styles.less';
 
-// Load helpers.
-// import formatNr from './helpers/FormatNr.js';
-// import roundNr from './helpers/RoundNr.js';
+// Load components.
 import Live from './components/Live.jsx';
 import Routes from './components/Routes.jsx';
 import Bird from './components/Bird.jsx';
 
-// const appID = '#app-root-2023-muuttolinnut';
-
-// https://www.npmjs.com/package/uuid
-// import { v4 as uuidv4 } from 'uuid';
+// Load helpers.
+// import formatNr from './helpers/FormatNr.js';
+// import roundNr from './helpers/RoundNr.js';
 
 function App() {
   // Data states.
-  // const [data, setData] = useState(false);
   const [activeTab, setActiveTab] = useState('tab1');
   const [activeBird, setActiveBird] = useState('1');
-
-  useEffect(() => {
-    // const data_file = (window.location.href.includes('unctad.org')) ? '/sites/default/files/data-file/2023-muuttolinnut.json' : './assets/data/data.json';
-    try {
-      // fetch(data_file)
-      //   .then((response) => {
-      //     if (!response.ok) {
-      //       throw Error(response.statusText);
-      //     }
-      //     return response.text();
-      //   })
-      //   .then(body => setData(JSON.parse(body)));
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
 
   const changeTab = (event, tab) => {
     document.querySelectorAll('.tab').forEach(tab_el => tab_el.classList.remove('tab_selected'));
@@ -56,7 +38,6 @@ function App() {
               <img src="https://dummyimage.com/100x1:1/f1f1f1/000&text=&nbsp;" alt="Kuvausteksti" className="selected" />
               <div className="bird_name">Lintu 1</div>
             </button>
-
           </li>
           <li>
             <button type="button" onClick={(event) => changeBird(event, '2')}>

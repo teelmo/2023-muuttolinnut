@@ -1,0 +1,35 @@
+{
+  "info": [{
+    "title":"Lintu ohittaa sähköjohdon",
+    "text": ["Salli on ohittanut Mosulin ja jatkaa matkaansa Turkin halki kohti Mustaamerta. Aavikot jäävät taakse. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.","Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."],
+    "lat": 2
+  },{
+    "title":"Lintu ohittaa toisen sähköjohdon",
+    "text": ["Apulaisoikeuskansleri näyttää vihreä valoa hallituksen itärajaa koskeville suunnitelmille. Hallitus käsittelee rajanylitysliikenteen rajoituksia valtioneuvoston yleisistunnossa illan aikana.","Esitystä koskeva päätösluonnos ja muistioluonnos toimitettiin oikeuskanslerinvirastoon tänään."],
+    "lat": 4
+  }],
+  "markers":[
+    {
+      "type": "Feature",
+      "geometry": {
+        "coordinates": [30.2176, 12.8628],
+        "type": "Point"
+      },
+      "properties": {
+        "description": "Tähän joku summaus. Kuva?",
+        "title": "Sudan"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "coordinates": [32.2903, 1.3733],
+        "type": "Point"
+      },
+      "properties": {
+        "description": "Tähän joku summaus. Kuva?",
+        "title": "Uganda"
+      }
+    }
+  ]
+}

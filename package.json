@@ -41,6 +41,8 @@
     "webpack-dev-server": "^4.9.2"
   },
   "dependencies": {
+    "@turf/turf": "^6.5.0",
+    "mapbox-gl": "2.11",
     "uuid": "^9.0.1"
   }
 }

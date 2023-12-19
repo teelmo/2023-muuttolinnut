@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 
 import '../../styles/styles.less';
 
+// Load components.
+import Map from './Map.jsx';
+
 // Load helpers.
 // import formatNr from './helpers/FormatNr.js';
 // import roundNr from './helpers/RoundNr.js';
-
-// const appID = '#app-root-2023-muuttolinnut';
-
-// https://www.npmjs.com/package/uuid
-// import { v4 as uuidv4 } from 'uuid';
 
 function Live({ activeBird }) {
   // Data states.
@@ -41,7 +39,7 @@ function Live({ activeBird }) {
           {activeBird}
         </h2>
         <div className="map_container">
-          <img src="https://dummyimage.com/600x4:3/f1f1f1/000&text=päivittyvä kartta" alt="Kuvausteksti" />
+          <Map />
           <p>Tiedot päivitetty: xx.xx.xxxx</p>
         </div>
         <div className="live_feed">
