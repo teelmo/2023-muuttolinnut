@@ -1,0 +1,58 @@
+{
+  "info": [{
+    "teksti": "Satelliitti-Salli lähtee liikkeelle 19.3. Ruandasta. Matkaa Paltamoon on suorinta linnuntietä noin <nobr>7 000 km.<nobr>",
+    "lat": -1.6
+  },{
+    "teksti": "Nämä infotekstit näytetään määrittelemällä jokaiselle tekstille leveyspiiri, jonka ylitettyään teksti tulee näkyviin.",
+    "lat": 4
+  },{
+    "teksti": "Tähän voi myös laittaa ohjeita/selityksiä. Esimerkiksi kertoa ettei lintu oikeasti lennä yhtä soittoa Suomeen tms.",
+    "lat": 6
+  },{
+    "teksti": "Tekstin voi ottaa pois näkyvistä määrittelemällä leveysasteen ja tyhjän tekstikentän.",
+    "lat": 9
+  },{
+    "teksti": "",
+    "lat": 11
+  },{
+    "teksti": "Salli valmistautuu Punaisen meren ylitykseen. Meren yllä se lentää noin 250 km.",
+    "lat": 19
+  },{
+    "teksti": "",
+    "lat": 28
+  },{
+    "teksti": "Alhaalla näkyy 70-luvulla rakennettu Assad-tekojärvi. Aleppon kaupunki saa juomavetensä siitä.",
+    "lat": 35.8 
+  },{
+    "teksti": "Nyt Salli on noin puolessa välissä muuttomatkaansa.",
+    "lat": 38 
+  },{
+    "teksti": "",
+    "lat": 42
+  }],
+  "lopputeksti": "Tähän joku summaus matkasta. Kuva? Kauan meni, monta kilometriä jne Lorem ipsum.",
+  "markers":[
+    {
+      "type": "Feature",
+      "geometry": {
+        "coordinates": [30.2176, 12.8628],
+        "type": "Point"
+      },
+      "properties": {
+        "description": "Tähän joku summaus. Kuva?",
+        "title": "Sudan"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "coordinates": [32.2903, 1.3733],
+        "type": "Point"
+      },
+      "properties": {
+        "description": "Tähän joku summaus. Kuva?",
+        "title": "Uganda"
+      }
+    }
+  ]
+}
