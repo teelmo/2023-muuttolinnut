@@ -1,37 +1,22 @@
 {
-  "info": [{
-    "teksti": "Satelliitti-Salli lähtee liikkeelle 19.3. Ruandasta. Matkaa Paltamoon on suorinta linnuntietä noin <nobr>7 000 km.<nobr>",
-    "lat": -1.6
+  "map_feed":[],
+  "map_feed_example": [{
+    "date":"3.4.2024",
+    "img":"https://dummyimage.com/600x16:9/f1f1f1/000&text=valokuva",
+    "img_alt":"Kuvausteksti",
+    "lat": 2,
+    "text": ["Salli on ohittanut Mosulin ja jatkaa matkaansa Turkin halki kohti Mustaamerta. Aavikot jäävät taakse. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.","Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."],
+    "title":"Lintu ohittaa sähköjohdon"
   },{
-    "teksti": "Nämä infotekstit näytetään määrittelemällä jokaiselle tekstille leveyspiiri, jonka ylitettyään teksti tulee näkyviin.",
-    "lat": 4
-  },{
-    "teksti": "Tähän voi myös laittaa ohjeita/selityksiä. Esimerkiksi kertoa ettei lintu oikeasti lennä yhtä soittoa Suomeen tms.",
-    "lat": 6
-  },{
-    "teksti": "Tekstin voi ottaa pois näkyvistä määrittelemällä leveysasteen ja tyhjän tekstikentän.",
-    "lat": 9
-  },{
-    "teksti": "",
-    "lat": 11
-  },{
-    "teksti": "Salli valmistautuu Punaisen meren ylitykseen. Meren yllä se lentää noin 250 km.",
-    "lat": 19
-  },{
-    "teksti": "",
-    "lat": 28
-  },{
-    "teksti": "Alhaalla näkyy 70-luvulla rakennettu Assad-tekojärvi. Aleppon kaupunki saa juomavetensä siitä.",
-    "lat": 35.8 
-  },{
-    "teksti": "Nyt Salli on noin puolessa välissä muuttomatkaansa.",
-    "lat": 38 
-  },{
-    "teksti": "",
-    "lat": 42
+    "date":"23.3.2024",
+    "img":"https://dummyimage.com/600x16:9/f1f1f1/000&text=valokuva",
+    "img_alt":"Kuvausteksti",
+    "lat": 4,
+    "text": ["Apulaisoikeuskansleri näyttää vihreä valoa hallituksen itärajaa koskeville suunnitelmille. Hallitus käsittelee rajanylitysliikenteen rajoituksia valtioneuvoston yleisistunnossa illan aikana.","Esitystä koskeva päätösluonnos ja muistioluonnos toimitettiin oikeuskanslerinvirastoon tänään."],
+    "title":"Lintu ohittaa toisen sähköjohdon"
   }],
-  "lopputeksti": "Tähän joku summaus matkasta. Kuva? Kauan meni, monta kilometriä jne Lorem ipsum.",
-  "markers":[
+  "map_markers":[],
+  "map_markers_example":[
     {
       "type": "Feature",
       "geometry": {
@@ -40,6 +25,8 @@
       },
       "properties": {
         "description": "Tähän joku summaus. Kuva?",
+        "img":"",
+        "img_alt":"",
         "title": "Sudan"
       }
     },
@@ -51,6 +38,8 @@
       },
       "properties": {
         "description": "Tähän joku summaus. Kuva?",
+        "img":"",
+        "img_alt":"",
         "title": "Uganda"
       }
     }
