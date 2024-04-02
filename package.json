@@ -3,11 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "yleDataviz": {
+    "darkMode": true,
+    "externalContent": true
+  },
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
+    "build": "NODE_ENV=production webpack --config webpack.prod.js",
+    "list-some-configs": "aws s3 ls s3://lusi-dataviz-prod/share_configs/ --profile lusi-aws-yle",
+    "list-some-files": "aws s3 ls s3://lusi-dataviz-prod/share/2023-muuttolinnut/ --profile lusi-aws-yle",
     "push": "git push && git push yle main",
     "start": "webpack serve --open --config webpack.dev.js",
-    "sync-gh-pages": "git subtree push --prefix public origin gh-pages"
+    "sync-gh-pages": "git subtree push --prefix public origin gh-pages",
+    "sync-prod": "NODE_ENV=production webpack --config webpack.yle.js && dataviz-deploy generate --dir public && aws s3 sync ./public s3://lusi-dataviz-prod/2023-muuttolinnut --profile lusi-aws-yle && date > sync-prod.txt",
+    "sync-test": "npm run build && dataviz-deploy generate --dir public && dataviz-deploy sync lusi-test 2023-muuttolinnut --folder public",
+    "sync-share-config": "cd assets/resources && aws s3 sync . s3://lusi-dataviz-prod/share_configs --exclude='*' --include='2023-muuttolinnut.json' --profile lusi-aws-yle"
   },
   "keywords": [],
   "author": "",
@@ -43,6 +52,7 @@
   "dependencies": {
     "@turf/turf": "^6.5.0",
     "mapbox-gl": "2.11",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "uuid4": "^2.0.3"
   }
 }

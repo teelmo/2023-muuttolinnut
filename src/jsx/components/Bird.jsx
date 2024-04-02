@@ -33,7 +33,7 @@ function Bird({ activeBird }) {
   }, []);
 
   return (
-    <div className="app">
+    <>
       <div className="container">
         <div className="content">
           <div className="image_container">
@@ -81,7 +81,7 @@ function Bird({ activeBird }) {
         </div>
       </div>
       <noscript>Your browser does not support JavaScript!</noscript>
-    </div>
+    </>
   );
 }
 

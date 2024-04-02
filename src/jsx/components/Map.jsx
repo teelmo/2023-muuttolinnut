@@ -1,7 +1,7 @@
 import React, {
   useEffect, useCallback, useRef, useState
 } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import '../../styles/styles.less';
 
@@ -10,18 +10,13 @@ import mapboxgl from 'mapbox-gl';
 // https://turfjs.org/getting-started/
 import * as turf from '@turf/turf';
 
-mapboxgl.accessToken = 'pk.eyJ1IjoieWxlaXNyYWRpbyIsImEiOiJjam90cTB4N3gxMGxjM3dsaDVsendub3N1In0.wL_Mc8cux0MxxhuUZWewJg';
-
 // https://docs.mapbox.com/mapbox-gl-js/guides/
 // https://docs.mapbox.com/mapbox-gl-js/example/globe/
 // https://docs.mapbox.com/mapbox-gl-js/api/properties/
 // https://docs.mapbox.com/mapbox-gl-js/example/free-camera-path/
+mapboxgl.accessToken = 'pk.eyJ1IjoieWxlaXNyYWRpbyIsImEiOiJjam90cTB4N3gxMGxjM3dsaDVsendub3N1In0.wL_Mc8cux0MxxhuUZWewJg';
 
-// Load helpers.
-// import formatNr from './helpers/FormatNr.js';
-// import roundNr from './helpers/RoundNr.js';
-
-function Map() {
+function Map({ update, values, view }) {
   const [data, setData] = useState(false);
   const [infoText, setInfoText] = useState(false);
   const [infoTitle, setInfoTitle] = useState(false);
@@ -42,25 +37,10 @@ function Map() {
   const isRunning = useRef(false);
   const [closeButtonText, setCloseButtonText] = useState('Jatka');
 
-  // Fetch data
-  const fetchExternalData = () => {
-    const baseURL = (window.location.href.includes('yle')) ? 'https://lusi-dataviz.ylestatic.fi/2023_muuttolinnut/' : './';
-    let values;
-    try {
-      values = Promise.all([
-        fetch(`${baseURL}assets/data/info.json`),
-        // fetch(`${baseURL}assets/data/route.json`)
-        fetch(`${baseURL}assets/data/partial_route.json`)
-      ]).then(results => Promise.all(results.map(result => result.json())));
-    } catch (error) {
-      console.error(error);
-    }
-    return values;
-  };
-
   const animationDuration = 18000;
   const pitch = 82;
   let start_time;
+  let prevAlongRoute = [0, 0];
   const smoothCamera = (oldInt, newInt) => {
     const brng = ((-oldInt - (-newInt)) / 80) + oldInt;
     return brng;
@@ -70,12 +50,12 @@ function Map() {
     document.querySelector('.controls_container').style.display = 'none';
   };
   const showMeta = () => {
-    document.querySelector('.info_text_container').style.display = 'block';
+    document.querySelector('.info_text_container').style.display = 'none';
     document.querySelector('.odometer').style.display = 'block';
   };
   const hideMeta = () => {
     document.querySelector('.info_text_container').style.display = 'none';
-    document.querySelector('.odometer').style.display = 'block';
+    document.querySelector('.odometer').style.display = 'none';
   };
   const hideMarkers = () => {
     document.querySelectorAll('.marker').forEach((marker) => {
@@ -88,14 +68,25 @@ function Map() {
     });
   };
 
+  const calculateBearing = (start, end) => {
+    const coordinates1 = start;
+    const coordinates2 = end;
+    const lon1 = turf.degreesToRadians(coordinates1[0]);
+    const lon2 = turf.degreesToRadians(coordinates2[0]);
+    const lat1 = turf.degreesToRadians(coordinates1[1]);
+    const lat2 = turf.degreesToRadians(coordinates2[1]);
+    const a = Math.sin(lon2 - lon1) * Math.cos(lat2);
+    const b = Math.cos(lat1) * Math.sin(lat2)
+            - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1);
+
+    return turf.radiansToDegrees(Math.atan2(a, b));
+  };
+
   const updateMap = (time) => {
     // get the overall distance of each route so we can interpolate along them
     const routeDistance = turf.lineDistance(curvedLineDataPoint.current);
     const cameraRouteDistance = turf.lineDistance(curvedLineDataPoint.current);
     const infoTexts = data[0];
-    if (phase.current === 0) {
-      console.log('on se nolla');
-    }
     // Animation ongoing.
     if (phase.current < 1 && isRunning.current === true) {
       // Animation start
@@ -108,23 +99,35 @@ function Map() {
       phase.current = (time - start_time) / animationDuration + phasePrevious;
       // kms = routeDistance * phase;
       setOdometer(Math.round(routeDistance * phase.current));
-
       const alongRoute = turf.along(
         curvedLineDataPoint.current,
         routeDistance * phase.current
       ).geometry.coordinates;
+
+      map1.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(prevAlongRoute, alongRoute));
+      const lastData = {
+        geometry: {
+          coordinates: alongRoute,
+          type: 'Point'
+        },
+        properties: {},
+        type: 'Feature'
+      };
+      map1.current.getSource('last').setData(lastData);
+
+      prevAlongRoute = [...alongRoute];
 
       const alongCamera = turf.along(
         curvedCameraDataPoint.current, // line
         cameraRouteDistance * phase.current // distance
       ).geometry.coordinates;
 
-      if (infoTextIdx.current < infoTexts.info.length) {
-        if (alongRoute[1] >= infoTexts.info[infoTextIdx.current].lat) {
+      if (infoTextIdx.current < infoTexts.map_feed.length && infoTextIdx.current === false) {
+        if (alongRoute[1] >= infoTexts.map_feed[infoTextIdx.current].lat) {
           isRunning.current = false;
           setPhasePrevious(phase.current);
-          setInfoText(infoTexts.info[infoTextIdx.current].text);
-          setInfoTitle(infoTexts.info[infoTextIdx.current].title);
+          setInfoText(infoTexts.map_feed[infoTextIdx.current].text);
+          setInfoTitle(infoTexts.map_feed[infoTextIdx.current].title);
           showMeta();
           infoTextIdx.current++;
         }
@@ -132,7 +135,7 @@ function Map() {
 
       // UPDATE SMALL MAP'S LINE
       tracedata.current.features[0].geometry.coordinates.push(alongRoute);
-      map1.current.getSource('trace').setData(tracedata.current);
+      // map1.current.getSource('trace').setData(tracedata.current);
       map1.current.setCenter(alongRoute);
 
       const camera = map2.current.getFreeCameraOptions();
@@ -153,8 +156,8 @@ function Map() {
     } else if (phase.current >= 1) { // Animation end
       isRunning.current = false;
       showMarkers();
-      setInfoTitle('Täällä tänne asti on päästy');
-      setInfoText(['Matka päättyi']);
+      setInfoTitle('Tässä matka tähän asti');
+      setInfoText(['Lue lisää Veskusta alta']);
       setCloseButtonText('Sulje');
       showMeta();
     }
@@ -164,7 +167,6 @@ function Map() {
     const worldBounds = [-80, -50, 120, 80];
 
     map1.current = new mapboxgl.Map({
-
       center: lineDataPoint[0], // starting position [lng, lat]
       container: map1Container.current, // container ID
       language: 'fi',
@@ -198,6 +200,40 @@ function Map() {
         type: 'line'
       });
 
+      map1.current.addSource('last', {
+        data: {
+          geometry: {
+            coordinates: [],
+            type: 'Point'
+          },
+          properties: {},
+          type: 'Feature'
+        },
+        type: 'geojson'
+      });
+
+      map1.current.loadImage(`${(window.location.href.includes('yle')) ? 'https://lusi-dataviz.ylestatic.fi/2023-muuttolinnut/' : './'}assets/img/bird2.png`, (error, image) => {
+        if (error) throw error;
+        // add image to the active style and make it SDF-enabled
+        map1.current.addImage('bird', image, { sdf: true });
+      });
+
+      map1.current.addLayer(
+        {
+          id: 'bird',
+          layout: {
+            'icon-allow-overlap': true,
+            'icon-image': 'bird',
+            'icon-size': ['interpolate', ['linear'], ['zoom'], 4, 0.1, 8, 0.2],
+          },
+          paint: {
+            'icon-color': '#fff'
+          },
+          source: 'last',
+          type: 'symbol'
+        }
+      );
+
       // https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/
       // start by showing just the first coordinate
       tracedata.current = { type: 'FeatureCollection', features: [{ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: [] } }] };
@@ -219,7 +255,7 @@ function Map() {
         }
       });
       // https://docs.mapbox.com/help/tutorials/custom-markers-gl-js/
-      result_data[0].markers.forEach((feature) => {
+      result_data[0].map_markers.forEach((feature) => {
         const el = document.createElement('div');
         el.className = 'marker';
 
@@ -293,11 +329,11 @@ function Map() {
   const cleanFlightData = useCallback((result) => {
     const cameraDataPoint = [];
     const lineDataPoint = [];
-    result[1]['JX.1023262'].forEach((map_point) => {
+    result[1]['JX.1442466'].forEach((map_point) => {
       const pointDate = new Date(map_point.d);
 
-      if (pointDate.getFullYear() === 2022 && pointDate.getMonth() < 6) {
-        // const pointDataPoint = { type: 'Feature', properties: { time: data['JX.1023262'][i].d }, geometry: { type: 'Point', coordinates: [data['JX.1023262'][i].y, data['JX.1023262'][i].x] } };
+      if (pointDate.getFullYear() > 2023 && pointDate.getMonth() > 1) {
+        // const pointDataPoint = { type: 'Feature', properties: { time: data['JX.1442466'][i].d }, geometry: { type: 'Point', coordinates: [data['JX.1442466'][i].y, data['JX.1442466'][i].x] } };
         // geojsonData.features.push(pointDataPoint);
         lineDataPoint.push([map_point.y, map_point.x]);
         // THIS IS LINE FOR CAMERA  DIRECTION. PROPABLY BETTER WAYS TO DO IT (e.g. turf.along in animation function)
@@ -317,17 +353,33 @@ function Map() {
   }, [createMap]);
 
   useEffect(() => {
-    fetchExternalData().then(result => {
-      setData(result);
-      cleanFlightData(result);
-    }).catch(console.error);
-  }, [cleanFlightData]);
+    setData(values);
+    // cleanFlightData(values);
+  }, [values]);
 
   const startJourney = () => {
-    hideControls();
-    isRunning.current = true;
-    window.requestAnimationFrame((t) => updateMap(t));
+    map1.current.on('load', () => {
+      hideControls();
+      isRunning.current = true;
+      window.requestAnimationFrame((t) => updateMap(t));
+    });
   };
+
+  const loadMap = (journey) => {
+    cleanFlightData(data);
+    if (journey === true) {
+      startJourney();
+    } else {
+      hideControls();
+    }
+  };
+
+  useEffect(() => {
+    if (update === true) {
+      map1.current.resize();
+      map2.current.resize();
+    }
+  }, [update, view]);
 
   const play = (action) => {
     if (action === 'Jatka') {
@@ -345,10 +397,10 @@ function Map() {
         <div className="content_container">
           <h3>Matkakartta</h3>
           <div className="button_container">
-            <button type="button" className="" data-value="0" onClick={() => startJourney()}>Näytä tähän astinen matka</button>
+            <button type="button" className="" data-value="0" onClick={() => loadMap(true)}>Lennä Veskun reitti</button>
           </div>
           <div className="button_container">
-            <button type="button" className="" data-value="0" onClick={() => hideControls()}>Selaa karttaa</button>
+            <button type="button" className="" data-value="0" onClick={() => loadMap(false)}>Veskun reitti kartalla</button>
           </div>
         </div>
       </div>
@@ -359,8 +411,8 @@ function Map() {
               infoText && (
               <div className="info_text">
                 <h3>{infoTitle}</h3>
-                <button type="button" onClick={() => play(closeButtonText)}>{closeButtonText}</button>
                 {infoText.map((text) => <p key={text}>{text}</p>)}
+                <button type="button" className="continue" onClick={() => play(closeButtonText)}>{closeButtonText}</button>
               </div>
               )
             }
@@ -371,12 +423,27 @@ function Map() {
           {' '}
           km
         </div>
-        <div ref={map1Container} className="main_map" />
-        <div className="secondary_map" ref={map2Container} />
+        <div ref={map1Container} className="no_fly main_map" />
+        <div className="fly secondary_map" ref={map2Container} />
       </div>
+      <p className="updated_info">
+        Tiedot päivitetty:
+        {' '}
+        {`${(new Date(values[1].updated)).getDate()}.${(new Date(values[1].updated)).getMonth() + 1}.${(new Date(values[1].updated)).getFullYear()}`}
+      </p>
       <noscript>Your browser does not support JavaScript!</noscript>
     </div>
   );
 }
+
+Map.propTypes = {
+  update: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  values: PropTypes.array.isRequired,
+  view: PropTypes.string.isRequired
+};
+
+Map.defaultProps = {
+};
 
 export default Map;
