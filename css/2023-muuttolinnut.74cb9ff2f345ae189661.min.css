@@ -121,6 +121,9 @@
   background-size: auto 100%;
   position: relative;
 }
+#app-root-2023-muuttolinnut .app .container .content .map_wrapper.alt_view {
+  background-image: url('https://lusi-dataviz.ylestatic.fi/2023-muuttolinnut/assets/img/map-min_2.png');
+}
 #app-root-2023-muuttolinnut .app .container .content .map_wrapper .controls_container {
   background-color: rgba(255, 255, 255, 0.85);
   height: 100%;
@@ -141,6 +144,9 @@
   font-size: 24px;
   margin: 0 0 10px 0;
 }
+#app-root-2023-muuttolinnut .app .container .content .map_wrapper .controls_container .content_container button {
+  box-sizing: content-box;
+}
 #app-root-2023-muuttolinnut .app .container .content .map_wrapper .controls_container .content_container .button_container {
   margin-bottom: 10px;
 }
@@ -159,6 +165,9 @@
 }
 #app-root-2023-muuttolinnut .app .container .content .map_wrapper .maps_container {
   position: relative;
+}
+#app-root-2023-muuttolinnut .app .container .content .map_wrapper .maps_container .mapboxgl-map .mapboxgl-ctrl-attrib.mapboxgl-compact {
+  box-sizing: content-box;
 }
 #app-root-2023-muuttolinnut .app .container .content .map_wrapper .maps_container .main_map {
   height: 600px;
