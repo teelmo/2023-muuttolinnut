@@ -105,6 +105,7 @@ function Map({ update, values, view }) {
       ).geometry.coordinates;
 
       map1.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(prevAlongRoute, alongRoute));
+      map2.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(prevAlongRoute, alongRoute));
       const lastData = {
         geometry: {
           coordinates: alongRoute,
@@ -114,6 +115,7 @@ function Map({ update, values, view }) {
         type: 'Feature'
       };
       map1.current.getSource('last').setData(lastData);
+      map2.current.getSource('last').setData(lastData);
 
       prevAlongRoute = [...alongRoute];
 
@@ -203,7 +205,7 @@ function Map({ update, values, view }) {
       map1.current.addSource('last', {
         data: {
           geometry: {
-            coordinates: [],
+            coordinates: lineDataPoint[0],
             type: 'Point'
           },
           properties: {},
@@ -225,6 +227,7 @@ function Map({ update, values, view }) {
             'icon-allow-overlap': true,
             'icon-image': 'bird',
             'icon-size': ['interpolate', ['linear'], ['zoom'], 4, 0.1, 8, 0.2],
+            'icon-rotate': calculateBearing(lineDataPoint[0], lineDataPoint[1])
           },
           paint: {
             'icon-color': '#fff'
@@ -323,11 +326,45 @@ function Map({ update, values, view }) {
         source: 'LineString',
         type: 'line'
       });
+      map2.current.addSource('last', {
+        data: {
+          geometry: {
+            coordinates: lineDataPoint[0],
+            type: 'Point'
+          },
+          properties: {},
+          type: 'Feature'
+        },
+        type: 'geojson'
+      });
+
+      map2.current.loadImage(`${(window.location.href.includes('yle')) ? 'https://lusi-dataviz.ylestatic.fi/2023-muuttolinnut/' : './'}assets/img/bird2.png`, (error, image) => {
+        if (error) throw error;
+        // add image to the active style and make it SDF-enabled
+        map2.current.addImage('bird', image, { sdf: true });
+      });
+
+      map2.current.addLayer(
+        {
+          id: 'bird',
+          layout: {
+            'icon-allow-overlap': true,
+            'icon-image': 'bird',
+            'icon-size': ['interpolate', ['linear'], ['zoom'], 4, 0.1, 8, 1],
+            'icon-rotate': calculateBearing(lineDataPoint[0], lineDataPoint[1])
+          },
+          paint: {
+            'icon-color': '#fff'
+          },
+          source: 'last',
+          type: 'symbol'
+        }
+      );
     });
   }, []);
 
   const cleanFlightData = useCallback((result) => {
-    const cameraDataPoint = [];
+    // const cameraDataPoint = [];
     const lineDataPoint = [];
     result[1]['JX.1442466'].forEach((map_point) => {
       const pointDate = new Date(map_point.d);
@@ -337,7 +374,7 @@ function Map({ update, values, view }) {
         // geojsonData.features.push(pointDataPoint);
         lineDataPoint.push([map_point.y, map_point.x]);
         // THIS IS LINE FOR CAMERA  DIRECTION. PROPABLY BETTER WAYS TO DO IT (e.g. turf.along in animation function)
-        cameraDataPoint.push([map_point.y, map_point.x]);
+        // cameraDataPoint.push([map_point.y, map_point.x]);
       }
     });
     curvedLineDataPoint.current = turf.bezierSpline(turf.lineString(lineDataPoint), {
@@ -350,6 +387,7 @@ function Map({ update, values, view }) {
     curvedCameraDataPoint.current = turf.lineString(tmp);
 
     createMap(lineDataPoint, result);
+    return lineDataPoint;
   }, [createMap]);
 
   useEffect(() => {
@@ -366,18 +404,48 @@ function Map({ update, values, view }) {
   };
 
   const loadMap = (journey) => {
-    cleanFlightData(data);
+    const lineDataPoint = cleanFlightData(data);
     if (journey === true) {
       startJourney();
     } else {
+      const lastData = {
+        geometry: {
+          coordinates: lineDataPoint[lineDataPoint.length - 1],
+          type: 'Point'
+        },
+        properties: {},
+        type: 'Feature'
+      };
+      map1.current.on('load', () => {
+        map1.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(lineDataPoint[lineDataPoint.length - 2], lineDataPoint[lineDataPoint.length - 1]));
+        map1.current.getSource('last').setData(lastData);
+      });
+      map2.current.on('load', () => {
+        map2.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(lineDataPoint[lineDataPoint.length - 2], lineDataPoint[lineDataPoint.length - 1]));
+        map2.current.getSource('last').setData(lastData);
+
+        const camera = map2.current.getFreeCameraOptions();
+        // set the position and altitude of the camera
+        camera.position = mapboxgl.MercatorCoordinate.fromLngLat({
+          lng: lineDataPoint[lineDataPoint.length - 1][0],
+          lat: lineDataPoint[lineDataPoint.length - 1][1]
+        }, 100000);
+        const point1 = turf.point([lineDataPoint[lineDataPoint.length - 1][0], lineDataPoint[lineDataPoint.length - 1][1]]);
+        const point2 = turf.point([lineDataPoint[lineDataPoint.length - 2][0], lineDataPoint[lineDataPoint.length - 2][1]]);
+        const bearingGoal = turf.bearing(point1.geometry.coordinates, point2.geometry.coordinates);
+        camera.setPitchBearing(pitch, bearingGoal);
+
+        map2.current.setFreeCameraOptions(camera);
+      });
+
       hideControls();
     }
   };
 
   useEffect(() => {
     if (update === true) {
-      map1.current.resize();
-      map2.current.resize();
+      if (map1.current) map1.current.resize();
+      if (map1.current) map2.current.resize();
     }
   }, [update, view]);
 
@@ -392,7 +460,7 @@ function Map({ update, values, view }) {
   };
 
   return (
-    <div className="map_wrapper">
+    <div className={(view === 'fly') ? 'map_wrapper alt_view' : 'map_wrapper'}>
       <div className="controls_container">
         <div className="content_container">
           <h3>Matkakartta</h3>
