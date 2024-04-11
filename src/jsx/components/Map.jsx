@@ -105,7 +105,7 @@ function Map({ update, values, view }) {
       ).geometry.coordinates;
 
       map1.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(prevAlongRoute, alongRoute));
-      map2.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(prevAlongRoute, alongRoute));
+      // map2.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(prevAlongRoute, alongRoute));
       const lastData = {
         geometry: {
           coordinates: alongRoute,
@@ -115,7 +115,7 @@ function Map({ update, values, view }) {
         type: 'Feature'
       };
       map1.current.getSource('last').setData(lastData);
-      map2.current.getSource('last').setData(lastData);
+      // map2.current.getSource('last').setData(lastData);
 
       prevAlongRoute = [...alongRoute];
 
@@ -326,40 +326,40 @@ function Map({ update, values, view }) {
         source: 'LineString',
         type: 'line'
       });
-      map2.current.addSource('last', {
-        data: {
-          geometry: {
-            coordinates: lineDataPoint[0],
-            type: 'Point'
-          },
-          properties: {},
-          type: 'Feature'
-        },
-        type: 'geojson'
-      });
+      // map2.current.addSource('last', {
+      //   data: {
+      //     geometry: {
+      //       coordinates: lineDataPoint[0],
+      //       type: 'Point'
+      //     },
+      //     properties: {},
+      //     type: 'Feature'
+      //   },
+      //   type: 'geojson'
+      // });
 
-      map2.current.loadImage(`${(window.location.href.includes('yle')) ? 'https://lusi-dataviz.ylestatic.fi/2023-muuttolinnut/' : './'}assets/img/bird2.png`, (error, image) => {
-        if (error) throw error;
-        // add image to the active style and make it SDF-enabled
-        map2.current.addImage('bird', image, { sdf: true });
-      });
+      // map2.current.loadImage(`${(window.location.href.includes('yle')) ? 'https://lusi-dataviz.ylestatic.fi/2023-muuttolinnut/' : './'}assets/img/bird2.png`, (error, image) => {
+      //   if (error) throw error;
+      //   // add image to the active style and make it SDF-enabled
+      //   map2.current.addImage('bird', image, { sdf: true });
+      // });
 
-      map2.current.addLayer(
-        {
-          id: 'bird',
-          layout: {
-            'icon-allow-overlap': true,
-            'icon-image': 'bird',
-            'icon-size': ['interpolate', ['linear'], ['zoom'], 4, 0.1, 8, 1],
-            'icon-rotate': calculateBearing(lineDataPoint[0], lineDataPoint[1])
-          },
-          paint: {
-            'icon-color': '#fff'
-          },
-          source: 'last',
-          type: 'symbol'
-        }
-      );
+      // map2.current.addLayer(
+      //   {
+      //     id: 'bird',
+      //     layout: {
+      //       'icon-allow-overlap': true,
+      //       'icon-image': 'bird',
+      //       'icon-size': ['interpolate', ['linear'], ['zoom'], 4, 0.1, 8, 1],
+      //       'icon-rotate': calculateBearing(lineDataPoint[0], lineDataPoint[1])
+      //     },
+      //     paint: {
+      //       'icon-color': '#fff'
+      //     },
+      //     source: 'last',
+      //     type: 'symbol'
+      //   }
+      // );
     });
   }, []);
 
@@ -421,14 +421,14 @@ function Map({ update, values, view }) {
         map1.current.getSource('last').setData(lastData);
       });
       map2.current.on('load', () => {
-        map2.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(lineDataPoint[lineDataPoint.length - 2], lineDataPoint[lineDataPoint.length - 1]));
-        map2.current.getSource('last').setData(lastData);
+      //   map2.current.setLayoutProperty('bird', 'icon-rotate', calculateBearing(lineDataPoint[lineDataPoint.length - 2], lineDataPoint[lineDataPoint.length - 1]));
+      //   map2.current.getSource('last').setData(lastData);
 
         const camera = map2.current.getFreeCameraOptions();
-        // set the position and altitude of the camera
+        //   // set the position and altitude of the camera
         camera.position = mapboxgl.MercatorCoordinate.fromLngLat({
-          lng: lineDataPoint[lineDataPoint.length - 1][0],
-          lat: lineDataPoint[lineDataPoint.length - 1][1]
+          lat: lineDataPoint[lineDataPoint.length - 1][1],
+          lng: lineDataPoint[lineDataPoint.length - 1][0]
         }, 100000);
         const point1 = turf.point([lineDataPoint[lineDataPoint.length - 1][0], lineDataPoint[lineDataPoint.length - 1][1]]);
         const point2 = turf.point([lineDataPoint[lineDataPoint.length - 2][0], lineDataPoint[lineDataPoint.length - 2][1]]);
